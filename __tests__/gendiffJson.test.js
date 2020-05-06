@@ -11,5 +11,5 @@ const expected = `{
 }`;
 
 test('gendiff JSON', () => {
-    expect(makeJsonDiff('../before.json', '../after.json')).toBe(expected);
+  expect(makeJsonDiff('../before.json', '../after.json')).toBe(expected);
 });
