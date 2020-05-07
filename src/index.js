@@ -1,5 +1,5 @@
 import program from 'commander';
-import makeJsonDiff from './jsonDiff.js';
+import makeDiff from './diff.js';
 
 export default () => {
   program
@@ -9,7 +9,7 @@ export default () => {
     .option('-f, --format [type]', 'output format')
     .arguments('<filepath1> <filepath2>')
     .action((filepath1, filepath2) => {
-      const diff = makeJsonDiff(filepath1, filepath2);
+      const diff = makeDiff(filepath1, filepath2);
       console.log(diff);
     });
 
