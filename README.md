@@ -6,6 +6,10 @@
 
 ### Gendiff is a CLI app that generates diff between two given files
 
-**Example:**
+**JSON:**
 
 <a href="https://asciinema.org/a/zbxMLcY5JMlPrYAFjYvCybg6C" target="_blank"><img src="https://asciinema.org/a/zbxMLcY5JMlPrYAFjYvCybg6C.svg" /></a>
+
+**YAML:**
+
+<a href="https://asciinema.org/a/Ao9GCzq2b33y89zm5Uhp809v3" target="_blank"><img src="https://asciinema.org/a/Ao9GCzq2b33y89zm5Uhp809v3.svg" /></a>
