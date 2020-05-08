@@ -13,3 +13,7 @@
 **YAML:**
 
 <a href="https://asciinema.org/a/Ao9GCzq2b33y89zm5Uhp809v3" target="_blank"><img src="https://asciinema.org/a/Ao9GCzq2b33y89zm5Uhp809v3.svg" /></a>
+
+**INI:**
+
+<a href="https://asciinema.org/a/IGePfOr76kKyROeCtHom9RrtG" target="_blank"><img src="https://asciinema.org/a/IGePfOr76kKyROeCtHom9RrtG.svg" /></a>
