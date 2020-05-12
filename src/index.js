@@ -1,17 +1,16 @@
-import program from 'commander';
-import makeDiff from './diff.js';
+import fs from 'fs';
+import buildDiff from './diff.js';
+import getParser from './parsers.js';
+import getFormatter from './formatters/formatters.js';
 
-export default () => {
-  program
-    .description('Compares two configuration files and shows a difference.')
-    .version('0.0.1', '-v, --version', 'output the version number')
-    .helpOption('-h, --help', 'output usage information')
-    .option('-f, --format [type]', 'output format')
-    .arguments('<filepath1> <filepath2>')
-    .action((filepath1, filepath2) => {
-      const diff = makeDiff(filepath1, filepath2);
-      console.log(diff);
-    });
+export default (filepath1, filepath2, format) => {
+  const toFormat = getFormatter(format);
+  const parse = getParser(filepath1, filepath2);
 
-  program.parse(process.argv);
+  const objectFile1 = parse(fs.readFileSync(filepath1, 'utf-8'));
+  const objectFile2 = parse(fs.readFileSync(filepath2, 'utf-8'));
+
+  const diff = buildDiff(objectFile1, objectFile2);
+
+  return toFormat(diff);
 };
