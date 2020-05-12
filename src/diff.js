@@ -1,37 +1,33 @@
 import _ from 'lodash';
-import fs from 'fs';
-import getParser from './parsers.js';
+import getUniqKeys from './utils/keys.js';
 
-export default (filepath1, filepath2) => {
-  const parse = getParser(filepath1, filepath2);
+const buildDiff = (obj1, obj2) => {
+  const keys = getUniqKeys(obj1, obj2);
 
-  const objectFile1 = parse(fs.readFileSync(filepath1, 'utf-8'));
-  const objectFile2 = parse(fs.readFileSync(filepath2, 'utf-8'));
-
-  const fileEntries1 = Object.entries(objectFile1);
-  const fileEntries2 = Object.entries(objectFile2);
-
-  const keys = _.uniq(fileEntries1.concat(fileEntries2).map(([key]) => key));
-
-  const compare = (acc, key) => {
-    if (_.has(objectFile1, key) && _.has(objectFile2, key)) {
-      if (objectFile1[key] === objectFile2[key]) {
-        acc.push(`    ${key}: ${objectFile1[key]}`);
-      } else {
-        acc.push(`  + ${key}: ${objectFile2[key]}`);
-        acc.push(`  - ${key}: ${objectFile1[key]}`);
-      }
-    } else if (!_.has(objectFile1, key) && _.has(objectFile2, key)) {
-      acc.push(`  + ${key}: ${objectFile2[key]}`);
-    } else if (_.has(objectFile1, key) && !_.has(objectFile2, key)) {
-      acc.push(`  - ${key}: ${objectFile1[key]}`);
+  const diff = keys.map((key) => {
+    if (!_.has(obj1, key)) {
+      return { key, type: 'added', value: obj2[key] };
     }
 
-    return acc;
-  };
+    if (!_.has(obj2, key)) {
+      return { key, type: 'deleted', value: obj1[key] };
+    }
 
-  const result = `{\n${keys.reduce(compare, []).join('\n')}\n}`;
+    if (obj1[key] === obj2[key]) {
+      return { key, type: 'unchanged', value: obj1[key] };
+    }
 
+    if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
+      const children = buildDiff(obj1[key], obj2[key]);
+      return { key, type: 'nested', children };
+    }
 
-  return result;
+    return {
+      key, type: 'changed', oldVal: obj1[key], newVal: obj2[key],
+    };
+  });
+
+  return diff;
 };
+
+export default buildDiff;
