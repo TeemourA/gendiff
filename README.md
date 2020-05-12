@@ -17,3 +17,7 @@
 **INI:**
 
 <a href="https://asciinema.org/a/IGePfOr76kKyROeCtHom9RrtG" target="_blank"><img src="https://asciinema.org/a/IGePfOr76kKyROeCtHom9RrtG.svg" /></a>
+
+**Nested strucutres:**
+
+<a href="https://asciinema.org/a/iKiALb5pW5IfHZrsJCzBpIon2" target="_blank"><img src="https://asciinema.org/a/iKiALb5pW5IfHZrsJCzBpIon2.svg" /></a>
