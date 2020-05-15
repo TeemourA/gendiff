@@ -42,7 +42,7 @@ const formatValue = (value, currentDepth) => (
 );
 
 const toStylish = (diff, depth = initialDepth) => {
-  const iter = (node) => {
+  const decode = (node) => {
     switch (node.type) {
       case 'added': {
         const indent = getIndent(depth, signs.added);
@@ -81,12 +81,12 @@ const toStylish = (diff, depth = initialDepth) => {
         return `${indent}${node.key}: ${children}`;
       }
       default:
-        throw new Error(`Unknown node type: ${node.type}`);
+        throw new Error(`${node.type} - unexpected node type`);
     }
   };
 
   const styledDiff = diff
-    .flatMap((node) => iter(node))
+    .flatMap((node) => decode(node))
     .join('\n');
 
   return makeWrapped(styledDiff, depth);
