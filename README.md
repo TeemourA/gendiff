@@ -21,3 +21,7 @@
 **Nested strucutres:**
 
 <a href="https://asciinema.org/a/iKiALb5pW5IfHZrsJCzBpIon2" target="_blank"><img src="https://asciinema.org/a/iKiALb5pW5IfHZrsJCzBpIon2.svg" /></a>
+
+**Plain format output:**
+
+<a href="https://asciinema.org/a/W2c5ATsjdOtpeOt70ots9hYwm" target="_blank"><img src="https://asciinema.org/a/W2c5ATsjdOtpeOt70ots9hYwm.svg" /></a>
