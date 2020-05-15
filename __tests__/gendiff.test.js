@@ -7,15 +7,7 @@ import getParser from '../src/parsers.js';
 console.log(getParser);
 
 const expected = {
-  plain: `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`,
-  deep: `{
+  stylish: `{
     common: {
         setting1: Value 1
       - setting2: 200
@@ -49,6 +41,16 @@ const expected = {
         fee: 100500
     }
 }`,
+  plain: `Property 'common.setting2' was deleted
+Property 'common.setting3' was changed from 'true' to [complex value]
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'common.follow' was added with value: 'false'
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'group1.baz' was changed from 'bas' to 'bars'
+Property 'group1.nest' was changed from [complex value] to 'str'
+Property 'group2' was deleted
+Property 'group3' was added with value: [complex value]`,
 };
 
 const fixtures = {
@@ -71,7 +73,13 @@ test('parsers', () => {
 });
 
 test('gendiff [stylish]', () => {
-  expect(genDiff(fixtures.before.json, fixtures.after.json, 'stylish')).toBe(expected.deep);
-  expect(genDiff(fixtures.before.yaml, fixtures.after.yaml, 'stylish')).toBe(expected.deep);
-  expect(genDiff(fixtures.before.ini, fixtures.after.ini, 'stylish')).toBe(expected.deep);
+  expect(genDiff(fixtures.before.json, fixtures.after.json, 'stylish')).toBe(expected.stylish);
+  expect(genDiff(fixtures.before.yaml, fixtures.after.yaml, 'stylish')).toBe(expected.stylish);
+  expect(genDiff(fixtures.before.ini, fixtures.after.ini, 'stylish')).toBe(expected.stylish);
+});
+
+test(('gendiff [plain]'), () => {
+  expect(genDiff(fixtures.before.json, fixtures.after.json, 'plain')).toBe(expected.plain);
+  expect(genDiff(fixtures.before.yaml, fixtures.after.yaml, 'plain')).toBe(expected.plain);
+  expect(genDiff(fixtures.before.ini, fixtures.after.ini, 'plain')).toBe(expected.plain);
 });
