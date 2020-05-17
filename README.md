@@ -18,10 +18,14 @@
 
 <a href="https://asciinema.org/a/IGePfOr76kKyROeCtHom9RrtG" target="_blank"><img src="https://asciinema.org/a/IGePfOr76kKyROeCtHom9RrtG.svg" /></a>
 
-**Nested strucutres:**
+**Stylish output format:**
 
 <a href="https://asciinema.org/a/iKiALb5pW5IfHZrsJCzBpIon2" target="_blank"><img src="https://asciinema.org/a/iKiALb5pW5IfHZrsJCzBpIon2.svg" /></a>
 
-**Plain format output:**
+**Plain output format:**
 
 <a href="https://asciinema.org/a/W2c5ATsjdOtpeOt70ots9hYwm" target="_blank"><img src="https://asciinema.org/a/W2c5ATsjdOtpeOt70ots9hYwm.svg" /></a>
+
+**JSON output format:**
+
+<a href="https://asciinema.org/a/cxyp2FyyGyr3bmdmARHkxc7e0" target="_blank"><img src="https://asciinema.org/a/cxyp2FyyGyr3bmdmARHkxc7e0.svg" /></a>
