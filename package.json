@@ -1,7 +1,13 @@
 {
   "name": "frontend-project-lvl2",
   "version": "1.0.0",
-  "description": "",
+  "description": "Gendiff is a CLI utility to compare two files",
+  "keywords": [
+    "gendiff",
+    "diff",
+    "compare",
+    "files"
+  ],
   "main": "src/index.js",
   "scripts": {
     "test": "npx -n --experimental-vm-modules jest"
@@ -21,7 +27,7 @@
     "type": "git",
     "url": "git+https://github.com/TeemourA/frontend-project-lvl2.git"
   },
-  "author": "",
+  "author": "Timur Akhmedov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/TeemourA/frontend-project-lvl2/issues"
