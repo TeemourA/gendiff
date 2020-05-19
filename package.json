@@ -15,7 +15,7 @@
     "transform": {}
   },
   "bin": {
-    "gendiff": "src/bin/gendiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "repository": {
     "type": "git",
