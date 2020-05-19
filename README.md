@@ -2,6 +2,10 @@
 
 Gendiff is a CLI utility that compares two files and outputs difference between them.
 
+![Node CI](https://github.com/TeemourA/frontend-project-lvl2/workflows/Node%20CI/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9a786162dd0379721077/maintainability)](https://codeclimate.com/github/TeemourA/frontend-project-lvl2/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9a786162dd0379721077/test_coverage)](https://codeclimate.com/github/TeemourA/frontend-project-lvl2/test_coverage)
+
 ## Installation
 
 1. Clone this repo.
@@ -31,7 +35,7 @@ gendiff before.json after.json
 
 gendiff before.json after.ini
 
-// throw an error
+// throws an error
 ```
 
 Also utility supports 3 output styles: stylish, plain, json. To choose an output format use -f flag and the name of a formatter.
@@ -44,9 +48,6 @@ More examples are below.
 
 ## Contributing
 Pull requests are welcome. Please open an issue first to discuss what you would like to change.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
 
 ## Asciinemas with examples:
 
