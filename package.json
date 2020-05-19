@@ -13,7 +13,7 @@
     "test": "npx -n --experimental-vm-modules jest"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=13"
   },
   "type": "module",
   "jest": {
