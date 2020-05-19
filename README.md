@@ -1,10 +1,54 @@
-## frontend-project-lvl2 gendiff
+# Gendiff
 
-![Node CI](https://github.com/TeemourA/frontend-project-lvl2/workflows/Node%20CI/badge.svg)
-[![Maintainability](https://api.codeclimate.com/v1/badges/9a786162dd0379721077/maintainability)](https://codeclimate.com/github/TeemourA/frontend-project-lvl2/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9a786162dd0379721077/test_coverage)](https://codeclimate.com/github/TeemourA/frontend-project-lvl2/test_coverage)
+Gendiff is a CLI utility that compares two files and outputs difference between them.
 
-### Gendiff is a CLI app that generates diff between two given files
+## Installation
+
+1. Clone this repo.
+2. Get into cloned directory.
+3. Use following commands:
+
+```
+make install
+make link
+```
+4. To make sure that utility installed and linked correctly call:
+```
+gendiff -v
+```
+
+## Usage
+
+Gendiff accepts two filepaths as arguments, where the first argument stands for the path to the file before changes and the second one is the path to the file after changes. At the moment only 3 input formats are supported: json, yaml, ini.
+Notice: comparing files should have the same extension, otherwise an erorr is thrown. 
+
+For instance:
+
+```
+gendiff before.json after.json
+
+// outputs difference
+
+gendiff before.json after.ini
+
+// throw an error
+```
+
+Also utility supports 3 output styles: stylish, plain, json. To choose an output format use -f flag and the name of a formatter.
+Stylish is a default option.
+
+```
+gendiff -f plain before.json after.json
+```
+More examples are below.
+
+## Contributing
+Pull requests are welcome. Please open an issue first to discuss what you would like to change.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Asciinemas with examples:
 
 **JSON:**
 
