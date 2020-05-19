@@ -147,13 +147,13 @@ Property 'group3' was added with value: [complex value]`,
 export const getFixtures = () => (
   {
     before: {
-      json: './__fixtures__/deepBefore.json',
-      yaml: './__fixtures__/deepBefore.yml',
-      ini: './__fixtures__/deepBefore.ini',
+      json: './__fixtures__/before.json',
+      yaml: './__fixtures__/before.yml',
+      ini: './__fixtures__/before.ini',
     },
     after: {
-      json: './__fixtures__/deepAfter.json',
-      yaml: './__fixtures__/deepAfter.yml',
-      ini: './__fixtures__/deepAfter.ini',
+      json: './__fixtures__/after.json',
+      yaml: './__fixtures__/after.yml',
+      ini: './__fixtures__/after.ini',
     },
   });
