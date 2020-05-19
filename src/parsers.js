@@ -3,6 +3,11 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 
 const supportedExtensions = ['.json', '.yml', '.ini'];
+const parsers = {
+  '.json': JSON.parse,
+  '.yml': yaml.safeLoad,
+  '.ini': ini.parse,
+};
 
 export default (filepath1, filepath2) => {
   const ext = path.extname(filepath1);
@@ -16,15 +21,7 @@ export default (filepath1, filepath2) => {
     throw new Error('File types must be equal');
   }
 
-  let parser;
-
-  if (ext === '.json') {
-    parser = JSON.parse;
-  } else if (ext === '.yml') {
-    parser = yaml.safeLoad;
-  } else if (ext === '.ini') {
-    parser = ini.parse;
-  }
+  const parser = parsers[ext];
 
   return parser;
 };
