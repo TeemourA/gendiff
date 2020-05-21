@@ -1,33 +1,58 @@
 import { test, expect } from '@jest/globals';
 import yaml from 'js-yaml';
 import ini from 'ini';
+import fs from 'fs';
 import genDiff from '../src/index.js';
 import getParser from '../src/parsers.js';
-import { getExpected, getFixtures } from '../__fixtures__/data.js';
 
-const expected = getExpected();
-const fixtures = getFixtures();
 
-test('parsers', () => {
-  expect(getParser(fixtures.before.json, fixtures.after.json)).toBe(JSON.parse);
-  expect(getParser(fixtures.before.yaml, fixtures.after.yaml)).toBe(yaml.safeLoad);
-  expect(getParser(fixtures.before.ini, fixtures.after.ini)).toBe(ini.parse);
-});
+const paths = {
+  before: {
+    '.json': './__fixtures__/before.json',
+    '.yml': './__fixtures__/before.yml',
+    '.ini': './__fixtures__/before.ini',
+  },
+  after: {
+    '.json': './__fixtures__/after.json',
+    '.yml': './__fixtures__/after.yml',
+    '.ini': './__fixtures__/after.ini',
+  },
+};
 
-test('gendiff [stylish]', () => {
-  expect(genDiff(fixtures.before.json, fixtures.after.json, 'stylish')).toBe(expected.stylish);
-  expect(genDiff(fixtures.before.yaml, fixtures.after.yaml, 'stylish')).toBe(expected.stylish);
-  expect(genDiff(fixtures.before.ini, fixtures.after.ini, 'stylish')).toBe(expected.stylish);
-});
+const parsers = {
+  '.json': JSON.parse,
+  '.yml': yaml.safeLoad,
+  '.ini': ini.parse,
+};
 
-test(('gendiff [plain]'), () => {
-  expect(genDiff(fixtures.before.json, fixtures.after.json, 'plain')).toBe(expected.plain);
-  expect(genDiff(fixtures.before.yaml, fixtures.after.yaml, 'plain')).toBe(expected.plain);
-  expect(genDiff(fixtures.before.ini, fixtures.after.ini, 'plain')).toBe(expected.plain);
-});
+const output = {
+  stylish: fs.readFileSync('./__fixtures__/stylish.txt', 'utf-8'),
+  plain: fs.readFileSync('./__fixtures__/plain.txt', 'utf-8'),
+  json: fs.readFileSync('./__fixtures__/json.txt', 'utf-8'),
+};
 
-test(('gendiff [json]'), () => {
-  expect(genDiff(fixtures.before.json, fixtures.after.json, 'json')).toBe(expected.json);
-  expect(genDiff(fixtures.before.yaml, fixtures.after.yaml, 'json')).toBe(expected.json);
-  expect(genDiff(fixtures.before.ini, fixtures.after.ini, 'json')).toBe(expected.json);
+describe.each`
+  ext
+  ${'.json'}
+  ${'.yml'}
+  ${'.ini'}
+`('gendiff for $ext files', ({ ext }) => {
+  const before = paths.before[ext];
+  const after = paths.after[ext];
+
+  test('parser', () => {
+    expect(getParser(before, after)).toBe(parsers[ext]);
+  });
+
+  test('formatter [stylish]', () => {
+    expect(genDiff(before, after, 'stylish')).toBe(output.stylish);
+  });
+
+  test('formatter [plain]', () => {
+    expect(genDiff(before, after, 'plain')).toBe(output.plain);
+  });
+
+  test('formatter [json]', () => {
+    expect(genDiff(before, after, 'json')).toBe(output.json);
+  });
 });
