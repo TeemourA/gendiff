@@ -2,15 +2,17 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 import json from './json.js';
 
+const supportedFormats = ['stylish', 'plain', 'json'];
+const formatters = {
+  stylish,
+  plain,
+  json,
+};
+
 export default (format) => {
-  switch (format) {
-    case 'stylish':
-      return stylish;
-    case 'plain':
-      return plain;
-    case 'json':
-      return json;
-    default:
-      throw new Error(`${format} is not supported`);
+  if (!supportedFormats.includes(format)) {
+    throw new Error(`${format} is not supported`);
   }
+
+  return formatters[format];
 };
