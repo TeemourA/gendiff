@@ -24,7 +24,6 @@ gendiff -v
 ## Usage
 
 Gendiff accepts two filepaths as arguments, where the first argument stands for the path to the file before changes and the second one is the path to the file after changes. At the moment only 3 input formats are supported: json, yaml, ini.
-Notice: comparing files should have the same extension, otherwise an error is thrown. 
 
 For instance:
 
