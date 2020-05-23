@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import getUniqKeys from './utils/keys.js';
+
+const getUniqKeys = (obj1, obj2) => _.union(Object.keys(obj1), Object.keys(obj2));
 
 const buildDiff = (obj1, obj2) => {
   const keys = getUniqKeys(obj1, obj2);
