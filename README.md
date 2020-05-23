@@ -31,10 +31,6 @@ For instance:
 gendiff before.json after.json
 
 // outputs difference
-
-gendiff before.json after.ini
-
-// throws an error
 ```
 
 Also utility supports 3 output styles: stylish, plain, json. To choose an output format use -f flag and the name of a formatter.
