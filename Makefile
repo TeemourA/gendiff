@@ -5,8 +5,11 @@ lint:
 	npx eslint .
 
 link:
-	sudo npm link
+	npm link
 
+unlink:
+	npm unlink
+	
 test:
 	npm test
 
