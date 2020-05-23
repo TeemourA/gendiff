@@ -41,7 +41,7 @@ const formatValue = (value, currentDepth) => (
   _.isPlainObject(value) ? formatObject(value, currentDepth) : value
 );
 
-const toStylish = (diff, depth = initialDepth) => {
+const formatToStylish = (diff, depth = initialDepth) => {
   const decode = (node) => {
     switch (node.type) {
       case 'added': {
@@ -76,7 +76,7 @@ const toStylish = (diff, depth = initialDepth) => {
       }
       case 'nested': {
         const indent = getIndent(depth);
-        const children = toStylish(node.children, depth + 1);
+        const children = formatToStylish(node.children, depth + 1);
 
         return `${indent}${node.key}: ${children}`;
       }
@@ -92,4 +92,4 @@ const toStylish = (diff, depth = initialDepth) => {
   return makeWrapped(styledDiff, depth);
 };
 
-export default toStylish;
+export default formatToStylish;

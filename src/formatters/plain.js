@@ -10,7 +10,7 @@ const calculateRoute = (route, node) => (route === '' ? `${node.key}` : `${route
 
 const formatValue = (value) => (_.isPlainObject(value) ? '[complex value]' : `'${value}'`);
 
-const toPlain = (diff, route = '') => {
+const formatToPlain = (diff, route = '') => {
   const decode = (node) => {
     const currentRoute = calculateRoute(route, node);
 
@@ -31,7 +31,7 @@ const toPlain = (diff, route = '') => {
       case 'nested': {
         const { children } = node;
 
-        return toPlain(children, currentRoute);
+        return formatToPlain(children, currentRoute);
       }
       default:
         throw new Error(`${node.type} - unexpected node type`);
@@ -48,4 +48,4 @@ const toPlain = (diff, route = '') => {
 };
 
 
-export default toPlain;
+export default formatToPlain;
