@@ -6,12 +6,14 @@
       {
         "key": "setting1",
         "type": "unchanged",
-        "value": "Value 1"
+        "value": "Value 1",
+        "depth": 2
       },
       {
         "key": "setting2",
         "type": "deleted",
-        "value": 200
+        "value": 200,
+        "depth": 2
       },
       {
         "key": "setting3",
@@ -19,7 +21,8 @@
         "oldVal": true,
         "newVal": {
           "key": "value"
-        }
+        },
+        "depth": 2
       },
       {
         "key": "setting6",
@@ -28,33 +31,40 @@
           {
             "key": "key",
             "type": "unchanged",
-            "value": "value"
+            "value": "value",
+            "depth": 3
           },
           {
             "key": "ops",
             "type": "added",
-            "value": "vops"
+            "value": "vops",
+            "depth": 3
           }
-        ]
+        ],
+        "depth": 2
       },
       {
         "key": "follow",
         "type": "added",
-        "value": false
+        "value": false,
+        "depth": 2
       },
       {
         "key": "setting4",
         "type": "added",
-        "value": "blah blah"
+        "value": "blah blah",
+        "depth": 2
       },
       {
         "key": "setting5",
         "type": "added",
         "value": {
           "key5": "value5"
-        }
+        },
+        "depth": 2
       }
-    ]
+    ],
+    "depth": 1
   },
   {
     "key": "group1",
@@ -64,12 +74,14 @@
         "key": "baz",
         "type": "changed",
         "oldVal": "bas",
-        "newVal": "bars"
+        "newVal": "bars",
+        "depth": 2
       },
       {
         "key": "foo",
         "type": "unchanged",
-        "value": "bar"
+        "value": "bar",
+        "depth": 2
       },
       {
         "key": "nest",
@@ -77,22 +89,26 @@
         "oldVal": {
           "key": "value"
         },
-        "newVal": "str"
+        "newVal": "str",
+        "depth": 2
       }
-    ]
+    ],
+    "depth": 1
   },
   {
     "key": "group2",
     "type": "deleted",
     "value": {
       "abc": 12345
-    }
+    },
+    "depth": 1
   },
   {
     "key": "group3",
     "type": "added",
     "value": {
       "fee": 100500
-    }
+    },
+    "depth": 1
   }
 ]
