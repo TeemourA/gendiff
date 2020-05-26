@@ -9,7 +9,7 @@ const formatters = {
 };
 
 export default (diff, format) => {
-  if (formatters[format] === undefined) {
+  if (!formatters[format]) {
     throw new Error(`${format} is not supported`);
   }
 
