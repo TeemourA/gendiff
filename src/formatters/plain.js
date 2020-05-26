@@ -1,46 +1,51 @@
 import _ from 'lodash';
 
-const removeUnchanged = (diff) => {
-  const filtered = diff.filter((node) => node.type !== 'unchanged');
-
-  return filtered;
-};
+const removeUnchangedNodes = (node) => node.type !== 'unchanged';
 
 const calculateRoute = (route, node) => (route === '' ? `${node.key}` : `${route}.${node.key}`);
 
 const formatValue = (value) => (_.isPlainObject(value) ? '[complex value]' : `'${value}'`);
 
-const formatToPlain = (diff, route = '') => {
-  const decode = (node) => {
+const plainMap = {
+  added: (node, route) => {
+    const currentRoute = calculateRoute(route, node);
+    const value = formatValue(node.value);
+
+    return `Property '${currentRoute}' was added with value: ${value}`;
+  },
+  deleted: (node, route) => {
     const currentRoute = calculateRoute(route, node);
 
-    switch (node.type) {
-      case 'added': {
-        const value = formatValue(node.value);
+    return `Property '${currentRoute}' was deleted`;
+  },
+  changed: (node, route) => {
+    const currentRoute = calculateRoute(route, node);
 
-        return `Property '${currentRoute}' was added with value: ${value}`;
-      }
-      case 'deleted':
-        return `Property '${currentRoute}' was deleted`;
-      case 'changed': {
-        const oldValue = formatValue(node.oldVal);
-        const newValue = formatValue(node.newVal);
+    const oldValue = formatValue(node.oldVal);
+    const newValue = formatValue(node.newVal);
 
-        return `Property '${currentRoute}' was changed from ${oldValue} to ${newValue}`;
-      }
-      case 'nested': {
-        const { children } = node;
+    return `Property '${currentRoute}' was changed from ${oldValue} to ${newValue}`;
+  },
+  nested: (node, route, formatToPlain) => {
+    const currentRoute = calculateRoute(route, node);
+    const { children } = node;
 
-        return formatToPlain(children, currentRoute);
-      }
-      default:
-        throw new Error(`${node.type} - unexpected node type`);
+    return formatToPlain(children, currentRoute);
+  },
+};
+const formatToPlain = (diff, route = '') => {
+  const decode = (node) => {
+    if (!_.has(plainMap, node.type)) {
+      throw new Error(`${node.type} - unexpected node type`);
     }
+
+    const handler = plainMap[node.type];
+
+    return node.type === 'nested' ? handler(node, route, formatToPlain) : handler(node, route);
   };
 
-  const filteredDiff = removeUnchanged(diff);
-
-  const plainedDiff = filteredDiff
+  const plainedDiff = diff
+    .filter(removeUnchangedNodes)
     .map(decode)
     .join('\n');
 

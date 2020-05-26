@@ -1,29 +1,17 @@
 import _ from 'lodash';
 
-const initialDepth = 1;
-
-const signs = {
-  added: '+',
-  deleted: '-',
-};
-
-const wrappers = {
-  curly: {
-    opening: '{',
-    closing: '}',
-  },
-};
-
-const getIndent = (depth, sign = null) => {
+const getIndent = (depth) => {
   const indentSize = 4;
-  const currentIndent = ' '.repeat(indentSize * depth);
+  const indent = ' '.repeat(indentSize * depth);
 
-  return sign === null ? currentIndent : `${currentIndent.slice(2)}${sign} `;
+  return indent;
 };
 
-const makeWrapped = (value, depth, wrapper = wrappers.curly) => {
+const getIndentWithSign = (indent, sign) => (`${indent.slice(2)}${sign} `);
+
+const makeWrapped = (value, depth) => {
   const closingWrapperIndent = getIndent(depth - 1);
-  const wrappedValue = `${wrapper.opening}\n${value}\n${closingWrapperIndent}${wrapper.closing}`;
+  const wrappedValue = `{\n${value}\n${closingWrapperIndent}}`;
 
   return wrappedValue;
 };
@@ -41,50 +29,55 @@ const formatValue = (value, currentDepth) => (
   _.isPlainObject(value) ? formatObject(value, currentDepth) : value
 );
 
-const formatToStylish = (diff, depth = initialDepth) => {
+const stylishMap = {
+  added: (node) => {
+    const indent = getIndentWithSign(getIndent(node.depth), '+');
+    const value = formatValue(node.value, node.depth);
+
+    return `${indent}${node.key}: ${value}`;
+  },
+  deleted: (node) => {
+    const indent = getIndentWithSign(getIndent(node.depth), '-');
+    const value = formatValue(node.value, node.depth);
+
+    return `${indent}${node.key}: ${value}`;
+  },
+  changed: (node) => {
+    const oldValueIndent = getIndentWithSign(getIndent(node.depth), '-');
+    const newValueIndent = getIndentWithSign(getIndent(node.depth), '+');
+
+    const oldValue = formatValue(node.oldVal, node.depth);
+    const newValue = formatValue(node.newVal, node.depth);
+
+    return [
+      `${oldValueIndent}${node.key}: ${oldValue}`,
+      `${newValueIndent}${node.key}: ${newValue}`,
+    ];
+  },
+  unchanged: (node) => {
+    const indent = getIndent(node.depth);
+    const value = formatValue(node.value, node.depth);
+
+    return `${indent}${node.key}: ${value}`;
+  },
+  nested: (node, formatToStylish) => {
+    const indent = getIndent(node.depth);
+    const children = formatToStylish(node.children, node.depth + 1);
+
+    return `${indent}${node.key}: ${children}`;
+  },
+};
+
+const formatToStylish = (diff, depth) => {
   const decode = (node) => {
-    switch (node.type) {
-      case 'added': {
-        const indent = getIndent(depth, signs.added);
-        const value = formatValue(node.value, depth);
-
-        return `${indent}${node.key}: ${value}`;
-      }
-      case 'deleted': {
-        const indent = getIndent(depth, signs.deleted);
-        const value = formatValue(node.value, depth);
-
-        return `${indent}${node.key}: ${value}`;
-      }
-      case 'changed': {
-        const oldValueIndent = getIndent(depth, signs.deleted);
-        const newValueIndent = getIndent(depth, signs.added);
-
-        const oldValue = formatValue(node.oldVal, depth);
-        const newValue = formatValue(node.newVal, depth);
-
-        return [
-          `${oldValueIndent}${node.key}: ${oldValue}`,
-          `${newValueIndent}${node.key}: ${newValue}`,
-        ];
-      }
-      case 'unchanged': {
-        const indent = getIndent(depth);
-        const value = formatValue(node.value, depth);
-
-        return `${indent}${node.key}: ${value}`;
-      }
-      case 'nested': {
-        const indent = getIndent(depth);
-        const children = formatToStylish(node.children, depth + 1);
-
-        return `${indent}${node.key}: ${children}`;
-      }
-      default:
-        throw new Error(`${node.type} - unexpected node type`);
+    if (!_.has(stylishMap, node.type)) {
+      throw new Error(`${node.type} - unexpected node type`);
     }
-  };
 
+    const handle = stylishMap[node.type];
+
+    return node.type === 'nested' ? handle(node, formatToStylish) : handle(node);
+  };
   const styledDiff = diff
     .flatMap((node) => decode(node))
     .join('\n');
