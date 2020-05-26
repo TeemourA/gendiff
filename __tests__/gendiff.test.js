@@ -2,25 +2,34 @@ import fs from 'fs';
 import path from 'path';
 import genDiff from '../src/index.js';
 
-
-const getPath = (filename) => (
-  path.join('.', '__fixtures__', filename)
-);
-
-const output = {
-  stylish: fs.readFileSync('./__fixtures__/resultStylishOutput.txt', 'utf-8'),
-  plain: fs.readFileSync('./__fixtures__/resultPlainOutput.txt', 'utf-8'),
-  json: fs.readFileSync('./__fixtures__/resultJsonOutput.txt', 'utf-8'),
+const inputFormats = {
+  json: '.json',
+  yaml: '.yml',
+  ini: '.ini',
 };
 
+const getPath = (filename, format) => (
+  path.join('.', '__fixtures__', filename.concat(format))
+);
+
+let output;
+
+beforeAll(() => {
+  output = {
+    stylish: fs.readFileSync(getPath('resultStylishOutput', '.txt'), 'utf-8'),
+    plain: fs.readFileSync(getPath('resultPlainOutput', '.txt'), 'utf-8'),
+    json: fs.readFileSync(getPath('resultJsonOutput', '.txt'), 'utf-8'),
+  };
+});
+
 describe.each`
-  ext
-  ${'.json'}
-  ${'.yml'}
-  ${'.ini'}
-`('gendiff for $ext files', ({ ext }) => {
-  const before = getPath(`before${ext}`);
-  const after = getPath(`after${ext}`);
+  format
+  ${inputFormats.json}
+  ${inputFormats.yaml}
+  ${inputFormats.ini}
+`('gendiff for $format files', ({ format }) => {
+  const before = getPath('before', format);
+  const after = getPath('after', format);
 
   test('formatter [stylish]', () => {
     expect(genDiff(before, after, 'stylish')).toBe(output.stylish);
