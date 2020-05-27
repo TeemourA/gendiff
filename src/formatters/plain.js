@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-const removeUnchangedNodes = (node) => node.type !== 'unchanged';
-
 const calculateRoute = (route, node) => (route === '' ? `${node.key}` : `${route}.${node.key}`);
 
 const formatValue = (value) => (_.isPlainObject(value) ? '[complex value]' : `'${value}'`);
