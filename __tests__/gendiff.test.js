@@ -2,32 +2,23 @@ import fs from 'fs';
 import path from 'path';
 import genDiff from '../src/index.js';
 
-const inputFormats = {
-  json: '.json',
-  yaml: '.yml',
-  ini: '.ini',
-};
+const inputFormats = ['json', 'yml', 'ini'];
 
 const getPath = (filename, format) => (
-  path.join('.', '__fixtures__', filename.concat(format))
+  path.join('.', '__fixtures__', `${filename}.${format}`)
 );
 
 let output;
 
 beforeAll(() => {
   output = {
-    stylish: fs.readFileSync(getPath('resultStylishOutput', '.txt'), 'utf-8'),
-    plain: fs.readFileSync(getPath('resultPlainOutput', '.txt'), 'utf-8'),
-    json: fs.readFileSync(getPath('resultJsonOutput', '.txt'), 'utf-8'),
+    stylish: fs.readFileSync(getPath('result-stylish-output', 'txt'), 'utf-8'),
+    plain: fs.readFileSync(getPath('result-plain-output', 'txt'), 'utf-8'),
+    json: fs.readFileSync(getPath('result-json-output', 'txt'), 'utf-8'),
   };
 });
 
-describe.each`
-  format
-  ${inputFormats.json}
-  ${inputFormats.yaml}
-  ${inputFormats.ini}
-`('gendiff for $format files', ({ format }) => {
+describe.each(inputFormats)('gendiff for format files', (format) => {
   const before = getPath('before', format);
   const after = getPath('after', format);
 
