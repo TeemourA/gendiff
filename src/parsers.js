@@ -1,7 +1,6 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 import _ from 'lodash';
-import path from 'path';
 
 const normalizeValue = (value) => {
   const isNumber = (typeof value === 'string') && Number(value);
@@ -14,26 +13,18 @@ const parseIni = (data) => {
   return normalizedObject;
 };
 
-const normalizeFormat = (filename) => {
-  const format = path.extname(filename).slice(1);
-
-  return format === 'yml' ? 'yaml' : format;
-};
-
 const parsers = {
   json: JSON.parse,
-  yaml: yaml.safeLoad,
+  yml: yaml.safeLoad,
   ini: parseIni,
 };
 
 export default (data, format) => {
-  const normalizedFormat = normalizeFormat(format);
-
-  if (!parsers[normalizedFormat]) {
+  if (!parsers[format]) {
     throw new Error('Unsupported format');
   }
 
-  const parse = parsers[normalizedFormat];
+  const parse = parsers[format];
 
   return parse(data);
 };
