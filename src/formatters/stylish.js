@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+const initialDepth = 1;
+
 const getIndent = (depth) => {
   const indentSize = 4;
   const indent = ' '.repeat(indentSize * depth);
@@ -30,56 +32,52 @@ const formatValue = (value, currentDepth) => (
 );
 
 const stylishMap = {
-  added: (node) => {
-    const indent = getIndentWithSign(getIndent(node.depth), '+');
-    const value = formatValue(node.value, node.depth);
+  added: (node, depth) => {
+    const indent = getIndentWithSign(getIndent(depth), '+');
+    const value = formatValue(node.value, depth);
 
     return `${indent}${node.key}: ${value}`;
   },
-  deleted: (node) => {
-    const indent = getIndentWithSign(getIndent(node.depth), '-');
-    const value = formatValue(node.value, node.depth);
+  deleted: (node, depth) => {
+    const indent = getIndentWithSign(getIndent(depth), '-');
+    const value = formatValue(node.value, depth);
 
     return `${indent}${node.key}: ${value}`;
   },
-  changed: (node) => {
-    const oldValueIndent = getIndentWithSign(getIndent(node.depth), '-');
-    const newValueIndent = getIndentWithSign(getIndent(node.depth), '+');
+  changed: (node, depth) => {
+    const oldValueIndent = getIndentWithSign(getIndent(depth), '-');
+    const newValueIndent = getIndentWithSign(getIndent(depth), '+');
 
-    const oldValue = formatValue(node.oldVal, node.depth);
-    const newValue = formatValue(node.newVal, node.depth);
+    const oldValue = formatValue(node.oldVal, depth);
+    const newValue = formatValue(node.newVal, depth);
 
     return [
       `${oldValueIndent}${node.key}: ${oldValue}`,
       `${newValueIndent}${node.key}: ${newValue}`,
     ];
   },
-  unchanged: (node) => {
-    const indent = getIndent(node.depth);
-    const value = formatValue(node.value, node.depth);
+  unchanged: (node, depth) => {
+    const indent = getIndent(depth);
+    const value = formatValue(node.value, depth);
 
     return `${indent}${node.key}: ${value}`;
   },
-  nested: (node, formatToStylish) => {
-    const indent = getIndent(node.depth);
-    const children = formatToStylish(node.children, node.depth + 1);
+  nested: (node, depth, formatToStylish) => {
+    const indent = getIndent(depth);
+    const children = formatToStylish(node.children, depth + 1);
 
     return `${indent}${node.key}: ${children}`;
   },
 };
 
-const formatToStylish = (diff, depth) => {
+const formatToStylish = (diff, depth = initialDepth) => {
   const decode = (node) => {
-    if (!_.has(stylishMap, node.type)) {
-      throw new Error(`${node.type} - unexpected node type`);
-    }
-
     const handle = stylishMap[node.type];
 
-    return node.type === 'nested' ? handle(node, formatToStylish) : handle(node);
+    return handle(node, depth, formatToStylish);
   };
   const styledDiff = diff
-    .flatMap((node) => decode(node))
+    .flatMap(decode)
     .join('\n');
 
   return makeWrapped(styledDiff, depth);
