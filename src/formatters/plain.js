@@ -32,21 +32,17 @@ const plainMap = {
 
     return formatToPlain(children, currentRoute);
   },
+  unchanged: () => [],
 };
 const formatToPlain = (diff, route = '') => {
   const decode = (node) => {
-    if (!_.has(plainMap, node.type)) {
-      throw new Error(`${node.type} - unexpected node type`);
-    }
+    const handle = plainMap[node.type];
 
-    const handler = plainMap[node.type];
-
-    return node.type === 'nested' ? handler(node, route, formatToPlain) : handler(node, route);
+    return handle(node, route, formatToPlain);
   };
 
   const plainedDiff = diff
-    .filter(removeUnchangedNodes)
-    .map(decode)
+    .flatMap(decode)
     .join('\n');
 
   return plainedDiff;
