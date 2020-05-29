@@ -18,7 +18,7 @@ beforeAll(() => {
   };
 });
 
-describe.each(inputFormats)('gendiff for format files', (format) => {
+describe.each(inputFormats)('gendiff for %p files', (format) => {
   const before = getPath('before', format);
   const after = getPath('after', format);
 
