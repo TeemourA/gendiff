@@ -2,7 +2,9 @@ import _ from 'lodash';
 
 const calculateRoute = (route, node) => (route === '' ? `${node.key}` : `${route}.${node.key}`);
 
-const formatValue = (value) => (_.isPlainObject(value) ? '[complex value]' : `'${value}'`);
+const normalizeValue = (value) => (typeof value === 'string' ? `'${value}'` : value);
+
+const formatValue = (value) => (_.isPlainObject(value) ? '[complex value]' : normalizeValue(value));
 
 const plainMap = {
   added: (node, route) => {
