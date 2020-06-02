@@ -21,7 +21,7 @@ const parsers = {
 
 export default (data, format) => {
   if (!parsers[format]) {
-    throw new Error('Unsupported format');
+    throw new Error(`${format} is not supported`);
   }
 
   const parse = parsers[format];
